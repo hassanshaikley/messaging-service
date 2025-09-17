@@ -24,6 +24,7 @@ defmodule MessagingService.Message do
       :attachments,
       :timestamp
     ])
+    |> Ecto.Changeset.validate_required([:from, :to, :type, :body])
     |> Ecto.Changeset.check_constraint(:messaging_provider_id,
       name: :messaging_provider_id_requires_timestamp
     )

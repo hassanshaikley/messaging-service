@@ -15,15 +15,15 @@ defmodule MessagingService.Factory do
     %MessagingService.Message{
       from: phone_us(),
       to: phone_us(),
-      type: Enum.random(["mms", "sms"]),
+      type: Enum.random([:mms, :sms]),
       messaging_provider_id:
         Enum.random([MessagingService.DataCase.generate_messaging_provider_id(), nil]),
       body: Faker.Lorem.paragraph(),
       attachments: fn
-        %{type: "mms"} ->
+        %{type: :mms} ->
           Enum.random([["attachment-url"], [], nil])
 
-        %{type: "sms"} ->
+        %{type: :sms} ->
           nil
       end,
       timestamp: fn

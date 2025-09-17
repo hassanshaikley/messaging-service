@@ -13,13 +13,13 @@ defmodule MessagingService.ProducerTest do
   end
 
   test "processes sms" do
-    outbound_sms = build(:message, messaging_provider_id: nil, timestamp: nil, type: "sms")
+    outbound_sms = build(:message, messaging_provider_id: nil, timestamp: nil, type: :sms)
 
     assert MessagingService.Producer.process(outbound_sms) == :ok
   end
 
   test "processes mms" do
-    outbound_mms = build(:message, messaging_provider_id: nil, timestamp: nil, type: "mms")
+    outbound_mms = build(:message, messaging_provider_id: nil, timestamp: nil, type: :mms)
 
     assert MessagingService.Producer.process(outbound_mms) == :ok
   end
