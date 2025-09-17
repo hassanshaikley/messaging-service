@@ -2,6 +2,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
   use MessagingServiceWeb.ConnCase
 
   alias MessagingService.Messages
+  alias MessagingService.Emails
 
   describe "POST /api/messages/sms" do
     test "creates a message with valid SMS data", %{conn: conn} do
@@ -134,6 +135,33 @@ defmodule MessagingServiceWeb.MessageControllerTest do
   end
 
   describe "POST /api/messages/mms" do
+    test "sends MMS with attachments", %{conn: conn} do
+      message_data = %{
+        "from" => "+12016661234",
+        "to" => "+18045551234",
+        "type" => "mms",
+        "body" => "Hello! This is a test MMS message with attachment.",
+        "attachments" => ["https://example.com/image.jpg"],
+        "timestamp" => "2024-11-01T14:00:00Z"
+      }
+
+      conn = post(conn, ~p"/api/messages/mms", message_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Message processed successfully"
+             } = json_response(conn, 201)
+
+      # Verify the message was created in the database
+      message = Messages.get_message!(message_id)
+      assert message.from == "+12016661234"
+      assert message.to == "+18045551234"
+      assert message.type == :mms
+      assert message.body == "Hello! This is a test MMS message with attachment."
+      assert message.attachments == ["https://example.com/image.jpg"]
+    end
+
     test "creates a message with valid MMS data", %{conn: conn} do
       message_data = %{
         "from" => "+12016661234",
@@ -339,6 +367,148 @@ defmodule MessagingServiceWeb.MessageControllerTest do
       # Verify the message was created without messaging_provider_id
       message = Messages.get_message!(message_id)
       assert message.messaging_provider_id == nil
+    end
+  end
+
+  describe "POST /api/messages/email" do
+    test "sends email with HTML content and attachments", %{conn: conn} do
+      message_data = %{
+        "from" => "user@usehatchapp.com",
+        "to" => "contact@gmail.com",
+        "body" => "Hello! This is a test email message with <b>HTML</b> formatting.",
+        "attachments" => ["https://example.com/document.pdf"],
+        "timestamp" => "2024-11-01T14:00:00Z"
+      }
+
+      conn = post(conn, ~p"/api/messages/email", message_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Message processed successfully"
+             } = json_response(conn, 201)
+
+      # Verify the message was created in the database
+      message = Emails.get_Email!(message_id)
+      assert message.from == "user@usehatchapp.com"
+      assert message.to == "contact@gmail.com"
+      assert message.body == "Hello! This is a test email message with <b>HTML</b> formatting."
+      assert message.attachments == ["https://example.com/document.pdf"]
+    end
+
+    test "creates email message with xillio_id", %{conn: conn} do
+      message_data = %{
+        "from" => "user@example.com",
+        "to" => "recipient@example.com",
+        "xillio_id" => "email-123",
+        "body" => "This is an email with xillio_id",
+        "attachments" => ["https://example.com/file.pdf"],
+        "timestamp" => "2024-11-01T14:00:00Z"
+      }
+
+      conn = post(conn, ~p"/api/messages/email", message_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Message processed successfully"
+             } = json_response(conn, 201)
+
+      # Verify the message was created in the database
+      message = Emails.get_Email!(message_id)
+      assert message.from == "user@example.com"
+      assert message.to == "recipient@example.com"
+      assert message.body == "This is an email with xillio_id"
+      assert message.attachments == ["https://example.com/file.pdf"]
+    end
+
+    test "handles email with multiple attachments", %{conn: conn} do
+      message_data = %{
+        "from" => "sender@company.com",
+        "to" => "recipient@company.com",
+        "body" => "Please find the attached documents.",
+        "attachments" => [
+          "https://example.com/document1.pdf",
+          "https://example.com/document2.docx",
+          "https://example.com/image.png"
+        ],
+        "timestamp" => "2024-11-01T14:00:00Z"
+      }
+
+      conn = post(conn, ~p"/api/messages/email", message_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Message processed successfully"
+             } = json_response(conn, 201)
+
+      # Verify the message was created in the database
+      message = Emails.get_Email!(message_id)
+      assert message.from == "sender@company.com"
+      assert message.to == "recipient@company.com"
+      assert message.body == "Please find the attached documents."
+      assert length(message.attachments) == 3
+      assert "https://example.com/document1.pdf" in message.attachments
+      assert "https://example.com/document2.docx" in message.attachments
+      assert "https://example.com/image.png" in message.attachments
+    end
+
+    test "handles email without attachments", %{conn: conn} do
+      message_data = %{
+        "from" => "simple@example.com",
+        "to" => "recipient@example.com",
+        "body" => "This is a simple email without attachments.",
+        "timestamp" => "2024-11-01T14:00:00Z"
+      }
+
+      conn = post(conn, ~p"/api/messages/email", message_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Message processed successfully"
+             } = json_response(conn, 201)
+
+      # Verify the message was created in the database
+      message = Emails.get_Email!(message_id)
+      assert message.from == "simple@example.com"
+      assert message.to == "recipient@example.com"
+      assert message.body == "This is a simple email without attachments."
+      assert message.attachments == nil
+    end
+
+    test "handles missing required fields for email", %{conn: conn} do
+      message_data = %{
+        "from" => "user@example.com"
+        # Missing 'to' and 'body' fields
+      }
+
+      conn = post(conn, ~p"/api/messages/email", message_data)
+
+      assert %{
+               "message" => "Invalid data",
+               "status" => "error",
+               "errors" => %{"body" => ["can't be blank"], "to" => ["can't be blank"]}
+             } = json_response(conn, 422)
+    end
+
+    test "handles invalid email data", %{conn: conn} do
+      message_data = %{
+        "from" => "",
+        "to" => "",
+        "body" => ""
+      }
+
+      conn = post(conn, ~p"/api/messages/email", message_data)
+
+      assert %{
+               "status" => "error",
+               "message" => "Invalid data",
+               "errors" => errors
+             } = json_response(conn, 422)
+
+      assert is_map(errors)
     end
   end
 end

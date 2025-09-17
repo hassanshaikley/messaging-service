@@ -23,5 +23,6 @@ defmodule MessagingService.Email do
       :attachments,
       :timestamp
     ])
+    |> Ecto.Changeset.validate_required([:from, :to, :body])
   end
 end

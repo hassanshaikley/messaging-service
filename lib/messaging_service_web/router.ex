@@ -31,6 +31,7 @@ defmodule MessagingServiceWeb.Router do
     scope "/messages" do
       post "/sms", MessageController, :create
       post "/mms", MessageController, :create
+      post "/email", MessageController, :create
     end
   end
 
