@@ -11,6 +11,13 @@ defmodule MessagingService.Factory do
     "[#{email_address}](mailto:#{email_address})"
   end
 
+  # TODO: This is a hack, find a better way to deal with this
+  def conversation_factory() do
+    %MessagingService.Conversation{
+      participants: [Faker.String.base64()]
+    }
+  end
+
   def message_factory do
     %MessagingService.Message{
       from: phone_us(),

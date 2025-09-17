@@ -10,6 +10,8 @@ defmodule MessagingService.Message do
     field :attachments, {:array, :string}
     field :timestamp, :utc_datetime
 
+    belongs_to :conversation, MessagingService.Conversation
+
     timestamps()
   end
 
@@ -22,8 +24,10 @@ defmodule MessagingService.Message do
       :messaging_provider_id,
       :body,
       :attachments,
-      :timestamp
+      :timestamp,
+      :conversation_id
     ])
+    |> Ecto.Changeset.assoc_constraint(:conversation)
     |> Ecto.Changeset.validate_required([:from, :to, :type, :body])
     |> Ecto.Changeset.check_constraint(:messaging_provider_id,
       name: :messaging_provider_id_requires_timestamp

@@ -1,9 +1,10 @@
 defmodule MessagingServiceWeb.WebhookController do
   use MessagingServiceWeb, :controller
 
-  alias MessagingService.Messages
-  alias MessagingService.Emails
   alias MessagingService.Consumer
+  alias MessagingService.Conversations
+  alias MessagingService.Emails
+  alias MessagingService.Messages
 
   action_fallback MessagingServiceWeb.FallbackController
 
@@ -14,7 +15,9 @@ defmodule MessagingServiceWeb.WebhookController do
   are received by the service (inbound emails).
   """
   def create(conn, params) do
-    with {:ok, message} <- create_entity(conn, params),
+    with {:ok, conversation} <- get_or_create_conversation(params),
+         {:ok, message} <-
+           create_entity(conn, Map.put(params, "conversation_id", conversation.id)),
          :ok <- Consumer.process(message) do
       conn
       |> put_status(:ok)
@@ -24,6 +27,13 @@ defmodule MessagingServiceWeb.WebhookController do
         message: "Webhook processed successfully"
       })
     end
+  end
+
+  defp get_or_create_conversation(params) do
+    from = Map.get(params, "from")
+    to = Map.get(params, "to")
+
+    Conversations.create_conversation(%{participants: [from, to]})
   end
 
   defp create_entity(conn, params) do

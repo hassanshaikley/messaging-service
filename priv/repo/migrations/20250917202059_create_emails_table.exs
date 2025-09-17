@@ -6,7 +6,6 @@ defmodule MessagingService.Repo.Migrations.CreateEmailsTable do
       add :from, :string, null: false
       add :to, :string, null: false
       add :xillio_id, :string
-
       add :body, :text, null: false
       add :attachments, {:array, :string}
       add :timestamp, :utc_datetime
