@@ -33,6 +33,14 @@ defmodule MessagingServiceWeb.Router do
       post "/mms", MessageController, :create
       post "/email", MessageController, :create
     end
+
+    scope "/webhooks" do
+      pipe_through :webhooks
+
+      post "/sms", WebhookController, :sms
+      post "/mms", WebhookController, :mms
+      post "/email", WebhookController, :email
+    end
   end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
