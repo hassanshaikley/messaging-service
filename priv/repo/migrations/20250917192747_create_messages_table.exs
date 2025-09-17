@@ -13,6 +13,7 @@ defmodule MessagingService.Repo.Migrations.CreateMessagesTable do
       add :attachments, {:array, :string}
       add :timestamp, :utc_datetime
 
+      # Can make an argument for exluding updated_at as they should not be updated
       timestamps()
     end
 
@@ -25,6 +26,7 @@ defmodule MessagingService.Repo.Migrations.CreateMessagesTable do
              check: "timestamp IS NOT NULL OR messaging_provider_id IS NULL"
            )
 
+    # Probably want these
     create index(:messages, [:from])
     create index(:messages, [:to])
   end

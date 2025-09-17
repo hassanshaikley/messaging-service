@@ -25,4 +25,11 @@ defmodule MessagingService.ConsumerTest do
 
     assert MessagingService.Consumer.process(inbound_mms) == :ok
   end
+
+  test "processes email" do
+    inbound_email =
+      build(:email, xillio_id: "some-id")
+
+    assert MessagingService.Consumer.process(inbound_email) == :ok
+  end
 end

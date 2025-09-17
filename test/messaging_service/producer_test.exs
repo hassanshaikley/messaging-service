@@ -23,4 +23,10 @@ defmodule MessagingService.ProducerTest do
 
     assert MessagingService.Producer.process(outbound_mms) == :ok
   end
+
+  test "processes email" do
+    outbound_email = build(:email, xillio_id: nil)
+
+    assert MessagingService.Producer.process(outbound_email) == :ok
+  end
 end
