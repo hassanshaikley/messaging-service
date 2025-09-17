@@ -24,6 +24,8 @@ defmodule MessagingService.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import MessagingService.DataCase
+
+      import MessagingService.Factory
     end
   end
 
@@ -54,5 +56,10 @@ defmodule MessagingService.DataCase do
         opts |> Keyword.get(String.to_existing_atom(key), key) |> to_string()
       end)
     end)
+  end
+
+  def generate_messaging_provider_id() do
+    # TODO: Sequence would be better so less chance of duplicates
+    "message-#{:rand.uniform(10_000_000)}"
   end
 end

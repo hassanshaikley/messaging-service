@@ -14,6 +14,10 @@ defmodule MessagingServiceWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :webhooks do
+    plug :accepts, ["json"]
+  end
+
   scope "/", MessagingServiceWeb do
     pipe_through :browser
 
