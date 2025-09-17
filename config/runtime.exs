@@ -1,4 +1,5 @@
 import Config
+Dotenv.load!()
 
 # config/runtime.exs is executed for all environments, including
 # during releases. It is executed after compilation and before the
@@ -18,6 +19,19 @@ import Config
 # script that automatically sets the env var above.
 if System.get_env("PHX_SERVER") do
   config :messaging_service, MessagingServiceWeb.Endpoint, server: true
+end
+
+if config_env() in [:dev, :test] do
+  config :messaging_service, MessagingService.Repo,
+    username: System.get_env("POSTGRES_USER"),
+    password: System.get_env("POSTGRES_PASSWORD"),
+    hostname: "localhost",
+    database:
+      "#{System.get_env("POSTGRES_DB")}_test#{(config_env() == :test && System.get_env("MIX_TEST_PARTITION")) || ""}",
+    pool: Ecto.Adapters.SQL.Sandbox,
+    pool_size: System.schedulers_online() * 2,
+    show_sensitive_data_on_connection_error: config_env() == :dev,
+    stacktrace: config_env() == :dev
 end
 
 if config_env() == :prod do
