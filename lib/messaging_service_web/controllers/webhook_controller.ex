@@ -8,13 +8,13 @@ defmodule MessagingServiceWeb.WebhookController do
   action_fallback MessagingServiceWeb.FallbackController
 
   @doc """
-  Handles incoming SMS/MMS webhooks from messaging providers.
+  Handles incoming email webhooks from email providers.
 
-  This endpoint receives webhook calls from SMS/MMS providers when messages
-  are received by the service (inbound messages).
+  This endpoint receives webhook calls from email providers when messages
+  are received by the service (inbound emails).
   """
-  def sms(conn, params) do
-    with {:ok, message} <- Messages.create_message(params),
+  def create(conn, params) do
+    with {:ok, message} <- create_entity(conn, params),
          :ok <- Consumer.process(message) do
       conn
       |> put_status(:ok)
@@ -26,22 +26,11 @@ defmodule MessagingServiceWeb.WebhookController do
     end
   end
 
-  @doc """
-  Handles incoming email webhooks from email providers.
-
-  This endpoint receives webhook calls from email providers when messages
-  are received by the service (inbound emails).
-  """
-  def email(conn, params) do
-    with {:ok, message} <- Emails.create_email(params),
-         :ok <- Consumer.process(message) do
-      conn
-      |> put_status(:ok)
-      |> json(%{
-        status: "success",
-        message_id: message.id,
-        message: "Webhook processed successfully"
-      })
+  defp create_entity(conn, params) do
+    case conn.path_info do
+      ["api", "webhooks", "sms"] -> Messages.create_message(params)
+      ["api", "webhooks", "mms"] -> Messages.create_message(params)
+      ["api", "webhooks", "email"] -> Emails.create_email(params)
     end
   end
 end

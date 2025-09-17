@@ -37,9 +37,9 @@ defmodule MessagingServiceWeb.Router do
     scope "/webhooks" do
       pipe_through :webhooks
 
-      post "/sms", WebhookController, :sms
-      post "/mms", WebhookController, :mms
-      post "/email", WebhookController, :email
+      post "/sms", WebhookController, :create
+      post "/mms", WebhookController, :create
+      post "/email", WebhookController, :create
     end
   end
 

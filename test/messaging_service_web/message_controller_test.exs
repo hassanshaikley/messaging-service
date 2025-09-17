@@ -389,7 +389,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
              } = json_response(conn, 201)
 
       # Verify the message was created in the database
-      message = Emails.get_Email!(message_id)
+      message = Emails.get_email!(message_id)
       assert message.from == "user@usehatchapp.com"
       assert message.to == "contact@gmail.com"
       assert message.body == "Hello! This is a test email message with <b>HTML</b> formatting."
@@ -415,7 +415,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
              } = json_response(conn, 201)
 
       # Verify the message was created in the database
-      message = Emails.get_Email!(message_id)
+      message = Emails.get_email!(message_id)
       assert message.from == "user@example.com"
       assert message.to == "recipient@example.com"
       assert message.body == "This is an email with xillio_id"
@@ -444,7 +444,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
              } = json_response(conn, 201)
 
       # Verify the message was created in the database
-      message = Emails.get_Email!(message_id)
+      message = Emails.get_email!(message_id)
       assert message.from == "sender@company.com"
       assert message.to == "recipient@company.com"
       assert message.body == "Please find the attached documents."
@@ -471,7 +471,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
              } = json_response(conn, 201)
 
       # Verify the message was created in the database
-      message = Emails.get_Email!(message_id)
+      message = Emails.get_email!(message_id)
       assert message.from == "simple@example.com"
       assert message.to == "recipient@example.com"
       assert message.body == "This is a simple email without attachments."

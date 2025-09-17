@@ -19,10 +19,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/sms", webhook_data)
 
       assert %{
-        "status" => "success",
-        "message_id" => message_id,
-        "message" => "Webhook processed successfully"
-      } = json_response(conn, 200)
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
 
       # Verify the message was created in the database
       message = Messages.get_message!(message_id)
@@ -48,10 +48,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/sms", webhook_data)
 
       assert %{
-        "status" => "success",
-        "message_id" => message_id,
-        "message" => "Webhook processed successfully"
-      } = json_response(conn, 200)
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
 
       # Verify the message was created in the database
       message = Messages.get_message!(message_id)
@@ -73,10 +73,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/sms", webhook_data)
 
       assert %{
-        "message" => "Invalid data",
-        "status" => "error",
-        "errors" => %{"body" => ["can't be blank"], "to" => ["can't be blank"]}
-      } = json_response(conn, 422)
+               "message" => "Invalid data",
+               "status" => "error",
+               "errors" => %{"body" => ["can't be blank"], "to" => ["can't be blank"]}
+             } = json_response(conn, 422)
     end
 
     test "handles invalid webhook data", %{conn: conn} do
@@ -90,10 +90,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/sms", webhook_data)
 
       assert %{
-        "status" => "error",
-        "message" => "Invalid data",
-        "errors" => errors
-      } = json_response(conn, 422)
+               "status" => "error",
+               "message" => "Invalid data",
+               "errors" => errors
+             } = json_response(conn, 422)
 
       assert is_map(errors)
     end
@@ -111,10 +111,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/sms", webhook_data)
 
       assert %{
-        "status" => "success",
-        "message_id" => _message_id,
-        "message" => "Webhook processed successfully"
-      } = json_response(conn, 200)
+               "status" => "success",
+               "message_id" => _message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
     end
 
     test "handles webhook without messaging_provider_id", %{conn: conn} do
@@ -128,10 +128,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/sms", webhook_data)
 
       assert %{
-        "status" => "success",
-        "message_id" => message_id,
-        "message" => "Webhook processed successfully"
-      } = json_response(conn, 200)
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
 
       # Verify the message was created without messaging_provider_id
       message = Messages.get_message!(message_id)
@@ -152,10 +152,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/sms", webhook_data)
 
       assert %{
-        "status" => "success",
-        "message_id" => message_id,
-        "message" => "Webhook processed successfully"
-      } = json_response(conn, 200)
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
 
       message = Messages.get_message!(message_id)
       assert message.attachments == []
@@ -176,10 +176,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/email", webhook_data)
 
       assert %{
-        "status" => "success",
-        "message_id" => message_id,
-        "message" => "Webhook processed successfully"
-      } = json_response(conn, 200)
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
 
       # Verify the message was created in the database
       email = Emails.get_email!(message_id)
@@ -201,10 +201,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/email", webhook_data)
 
       assert %{
-        "status" => "success",
-        "message_id" => message_id,
-        "message" => "Webhook processed successfully"
-      } = json_response(conn, 200)
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
 
       # Verify the message was created in the database
       email = Emails.get_email!(message_id)
@@ -223,10 +223,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/email", webhook_data)
 
       assert %{
-        "message" => "Invalid data",
-        "status" => "error",
-        "errors" => %{"body" => ["can't be blank"], "to" => ["can't be blank"]}
-      } = json_response(conn, 422)
+               "message" => "Invalid data",
+               "status" => "error",
+               "errors" => %{"body" => ["can't be blank"], "to" => ["can't be blank"]}
+             } = json_response(conn, 422)
     end
 
     test "handles email webhook with multiple attachments", %{conn: conn} do
@@ -246,10 +246,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/email", webhook_data)
 
       assert %{
-        "status" => "success",
-        "message_id" => message_id,
-        "message" => "Webhook processed successfully"
-      } = json_response(conn, 200)
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
 
       # Verify the message was created in the database
       email = Emails.get_email!(message_id)
@@ -272,10 +272,10 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/email", webhook_data)
 
       assert %{
-        "status" => "success",
-        "message_id" => message_id,
-        "message" => "Webhook processed successfully"
-      } = json_response(conn, 200)
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
 
       # Verify the message was created without xillio_id
       email = Emails.get_email!(message_id)
@@ -292,12 +292,232 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       conn = post(conn, ~p"/api/webhooks/email", webhook_data)
 
       assert %{
-        "status" => "error",
-        "message" => "Invalid data",
-        "errors" => errors
-      } = json_response(conn, 422)
+               "status" => "error",
+               "message" => "Invalid data",
+               "errors" => errors
+             } = json_response(conn, 422)
 
       assert is_map(errors)
+    end
+  end
+
+  describe "POST /api/webhooks/mms" do
+    test "processes incoming MMS webhook with attachments", %{conn: conn} do
+      webhook_data = %{
+        "from" => "+18045551234",
+        "to" => "+12016661234",
+        "type" => "mms",
+        "messaging_provider_id" => "mms-message-1",
+        "body" => "Check out this image!",
+        "attachments" => ["https://example.com/image.jpg", "https://example.com/video.mp4"],
+        "timestamp" => "2024-11-01T14:00:00Z"
+      }
+
+      conn = post(conn, ~p"/api/webhooks/mms", webhook_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
+
+      # Verify the message was created in the database
+      message = Messages.get_message!(message_id)
+      assert message.from == "+18045551234"
+      assert message.to == "+12016661234"
+      assert message.type == :mms
+      assert message.body == "Check out this image!"
+      assert message.messaging_provider_id == "mms-message-1"
+
+      assert message.attachments == [
+               "https://example.com/image.jpg",
+               "https://example.com/video.mp4"
+             ]
+    end
+
+    test "processes incoming MMS webhook without attachments", %{conn: conn} do
+      webhook_data = %{
+        "from" => "+18045551234",
+        "to" => "+12016661234",
+        "type" => "mms",
+        "messaging_provider_id" => "mms-message-2",
+        "body" => "This is an MMS without attachments",
+        "attachments" => [],
+        "timestamp" => "2024-11-01T14:00:00Z"
+      }
+
+      conn = post(conn, ~p"/api/webhooks/mms", webhook_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
+
+      # Verify the message was created in the database
+      message = Messages.get_message!(message_id)
+      assert message.from == "+18045551234"
+      assert message.to == "+12016661234"
+      assert message.type == :mms
+      assert message.body == "This is an MMS without attachments"
+      assert message.messaging_provider_id == "mms-message-2"
+      assert message.attachments == []
+    end
+
+    test "processes incoming MMS webhook with null attachments", %{conn: conn} do
+      webhook_data = %{
+        "from" => "+18045551234",
+        "to" => "+12016661234",
+        "type" => "mms",
+        "messaging_provider_id" => "mms-message-3",
+        "body" => "This is an MMS with null attachments",
+        "attachments" => nil,
+        "timestamp" => "2024-11-01T14:00:00Z"
+      }
+
+      conn = post(conn, ~p"/api/webhooks/mms", webhook_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
+
+      # Verify the message was created in the database
+      message = Messages.get_message!(message_id)
+      assert message.from == "+18045551234"
+      assert message.to == "+12016661234"
+      assert message.type == :mms
+      assert message.body == "This is an MMS with null attachments"
+      assert message.messaging_provider_id == "mms-message-3"
+      assert message.attachments == nil
+    end
+
+    test "handles missing required fields in MMS webhook", %{conn: conn} do
+      webhook_data = %{
+        "from" => "+18045551234",
+        "type" => "mms"
+        # Missing 'to' and 'body' fields
+      }
+
+      conn = post(conn, ~p"/api/webhooks/mms", webhook_data)
+
+      assert %{
+               "message" => "Invalid data",
+               "status" => "error",
+               "errors" => %{"body" => ["can't be blank"], "to" => ["can't be blank"]}
+             } = json_response(conn, 422)
+    end
+
+    test "handles invalid MMS webhook data", %{conn: conn} do
+      webhook_data = %{
+        "from" => "",
+        "to" => "",
+        "type" => "invalid_type",
+        "body" => ""
+      }
+
+      conn = post(conn, ~p"/api/webhooks/mms", webhook_data)
+
+      assert %{
+               "status" => "error",
+               "message" => "Invalid data",
+               "errors" => errors
+             } = json_response(conn, 422)
+
+      assert is_map(errors)
+    end
+
+    test "handles atom keys in MMS webhook parameters", %{conn: conn} do
+      webhook_data = %{
+        from: "+18045551234",
+        to: "+12016661234",
+        type: "mms",
+        body: "This is an incoming MMS with atom keys",
+        messaging_provider_id: "mms-message-4",
+        attachments: ["https://example.com/image.jpg"],
+        timestamp: DateTime.utc_now()
+      }
+
+      conn = post(conn, ~p"/api/webhooks/mms", webhook_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => _message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
+    end
+
+    test "handles MMS webhook without messaging_provider_id", %{conn: conn} do
+      webhook_data = %{
+        "from" => "+18045551234",
+        "to" => "+12016661234",
+        "type" => "mms",
+        "body" => "MMS without provider ID",
+        "attachments" => ["https://example.com/image.jpg"]
+      }
+
+      conn = post(conn, ~p"/api/webhooks/mms", webhook_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
+
+      # Verify the message was created without messaging_provider_id
+      message = Messages.get_message!(message_id)
+      assert message.messaging_provider_id == nil
+    end
+
+    test "handles MMS webhook with large attachment arrays", %{conn: conn} do
+      attachments = for i <- 1..5, do: "https://example.com/image#{i}.jpg"
+
+      webhook_data = %{
+        "from" => "+18045551234",
+        "to" => "+12016661234",
+        "type" => "mms",
+        "messaging_provider_id" => "mms-message-5",
+        "body" => "Check out these multiple images!",
+        "attachments" => attachments,
+        "timestamp" => "2024-11-01T14:00:00Z"
+      }
+
+      conn = post(conn, ~p"/api/webhooks/mms", webhook_data)
+
+      assert %{
+               "status" => "success",
+               "message_id" => message_id,
+               "message" => "Webhook processed successfully"
+             } = json_response(conn, 200)
+
+      # Verify the message was created in the database
+      message = Messages.get_message!(message_id)
+      assert message.from == "+18045551234"
+      assert message.to == "+12016661234"
+      assert message.type == :mms
+      assert message.body == "Check out these multiple images!"
+      assert length(message.attachments) == 5
+      assert Enum.all?(message.attachments, &String.starts_with?(&1, "https://example.com/image"))
+    end
+
+    test "handles MMS webhook with empty body", %{conn: conn} do
+      webhook_data = %{
+        "from" => "+18045551234",
+        "to" => "+12016661234",
+        "type" => "mms",
+        "body" => "",
+        "attachments" => ["https://example.com/image.jpg"],
+        "messaging_provider_id" => "mms-message-6"
+      }
+
+      conn = post(conn, ~p"/api/webhooks/mms", webhook_data)
+
+      assert %{
+               "status" => "error",
+               "message" => "Invalid data",
+               "errors" => %{"body" => ["can't be blank"]}
+             } = json_response(conn, 422)
     end
   end
 end
