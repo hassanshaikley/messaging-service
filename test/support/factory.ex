@@ -6,7 +6,7 @@ defmodule MessagingService.Factory do
   end
 
   def message_factory do
-    %Message{
+    %MessagingService.Message{
       from: phone_us(),
       to: phone_us(),
       type: Enum.random(["mms", "sms"]),
