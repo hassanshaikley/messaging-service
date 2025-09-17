@@ -1,4 +1,4 @@
-defmodule MessagingServiceWeb.SMSController do
+defmodule MessagingServiceWeb.MessageController do
   use MessagingServiceWeb, :controller
 
   alias MessagingService.Messages

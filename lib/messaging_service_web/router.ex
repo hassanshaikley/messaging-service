@@ -29,7 +29,8 @@ defmodule MessagingServiceWeb.Router do
     pipe_through :api
 
     scope "/messages" do
-      post "/sms", SMSController, :create
+      post "/sms", MessageController, :create
+      post "/mms", MessageController, :create
     end
   end
 
