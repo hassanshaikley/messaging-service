@@ -35,6 +35,6 @@ defmodule MessagingService.Consumer do
 
   defp get_message_type(%{type: :sms}), do: "sms"
   defp get_message_type(%{type: :mms}), do: "mms"
-  defp get_message_type(%{xillio_id: _some_xillio_id}), do: "email"
+  defp get_message_type(%{type: :email}), do: "email"
   defp get_message_type(_), do: nil
 end

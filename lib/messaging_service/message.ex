@@ -1,11 +1,13 @@
 defmodule MessagingService.Message do
   use Ecto.Schema
+  import Ecto.Changeset
 
   schema "messages" do
     field :from, :string
     field :to, :string
-    field :type, Ecto.Enum, values: [:sms, :mms]
-    field :messaging_provider_id, :string
+    field :type, Ecto.Enum, values: [:sms, :mms, :email]
+    field :remote_id, :string
+    field :remote_id_type, Ecto.Enum, values: [:messaging_provider, :xillio]
     field :body, :string
     field :attachments, {:array, :string}
     field :timestamp, :utc_datetime
@@ -21,16 +23,40 @@ defmodule MessagingService.Message do
       :from,
       :to,
       :type,
-      :messaging_provider_id,
+      :remote_id,
       :body,
       :attachments,
       :timestamp,
       :conversation_id
     ])
     |> Ecto.Changeset.assoc_constraint(:conversation)
+    |> set_remote_id_and_remote_id_type(params)
     |> Ecto.Changeset.validate_required([:from, :to, :type, :body])
-    |> Ecto.Changeset.check_constraint(:messaging_provider_id,
-      name: :messaging_provider_id_requires_timestamp
-    )
+
+    # if messaging_provider_id then set remote_id and message
+    # |> Ecto.Changeset.check_constraint(:remote_id,
+    #   name: :remote_id_requires_timestamp
+    # )
+  end
+
+  defp set_remote_id_and_remote_id_type(changeset, params) do
+    case Map.get(params, :xillio_id) do
+      nil ->
+        case Map.get(params, "messaging_provider_id") do
+          nil ->
+            changeset
+
+          messaging_provider_id ->
+            changeset
+            |> put_change(:remote_id, messaging_provider_id)
+            |> put_change(:remote_id_type, :messaging_provider)
+        end
+
+      xillio_id ->
+        changeset
+        |> put_change(:remote_id, xillio_id)
+        |> put_change(:remote_id_type, :xillio)
+        |> put_change(:type, :email)
+    end
   end
 end

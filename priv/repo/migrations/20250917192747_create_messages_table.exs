@@ -7,8 +7,9 @@ defmodule MessagingService.Repo.Migrations.CreateMessagesTable do
     create table(:messages) do
       add :from, :string, null: false
       add :to, :string, null: false
-      add :type, :string, null: false
-      add :messaging_provider_id, :string
+      add :type, :string
+      add :remote_id, :string
+      add :remote_id_type, :string
       add :body, :text, null: false
       add :attachments, {:array, :string}
       add :timestamp, :utc_datetime
@@ -22,12 +23,14 @@ defmodule MessagingService.Repo.Migrations.CreateMessagesTable do
 
     # Nice to check this at the DB level to create a definition for inbound/outbound at DB level, could be useful to index as well
     # As will likely filter by the presence of both or the opposite.
-    create constraint(:messages, :messaging_provider_id_requires_timestamp,
-             check: "timestamp IS NOT NULL OR messaging_provider_id IS NULL"
-           )
+    # Granted I am not going to do this because I decided to bundle the emails with the message at the DB level
+    # create constraint(:messages, :messaging_provider_id_requires_timestamp,
+    #          check: "timestamp IS NOT NULL OR messaging_provider_id IS NULL"
+    #        )
 
     # Probably want these
     create index(:messages, [:from])
     create index(:messages, [:to])
+    create index(:messages, [:type])
   end
 end

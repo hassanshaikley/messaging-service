@@ -30,11 +30,11 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       assert message.to == "+12016661234"
       assert message.type == :sms
       assert message.body == "This is an incoming SMS message"
-      assert message.messaging_provider_id == "message-1"
+      assert message.remote_id == "message-1"
       assert message.attachments == nil
     end
 
-    test "processes incoming MMS webhook with attachments", %{conn: conn} do
+    test "processes incoming SMS webhook with attachments", %{conn: conn} do
       webhook_data = %{
         "from" => "+18045551234",
         "to" => "+12016661234",
@@ -57,9 +57,9 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       message = Messages.get_message!(message_id)
       assert message.from == "+18045551234"
       assert message.to == "+12016661234"
-      assert message.type == :mms
+      assert message.type == :sms
       assert message.body == "Check out this image!"
-      assert message.messaging_provider_id == "message-2"
+      assert message.remote_id == "message-2"
       assert message.attachments == ["https://example.com/image.jpg"]
     end
 
@@ -135,7 +135,7 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
 
       # Verify the message was created without messaging_provider_id
       message = Messages.get_message!(message_id)
-      assert message.messaging_provider_id == nil
+      assert message.remote_id == nil
     end
 
     test "handles webhook with empty attachments", %{conn: conn} do
@@ -182,7 +182,7 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
              } = json_response(conn, 200)
 
       # Verify the message was created in the database
-      email = Emails.get_email!(message_id)
+      email = Messages.get_message!(message_id)
       assert email.from == "sender@example.com"
       assert email.to == "recipient@example.com"
       assert email.body == "This is an incoming email message with <b>HTML</b> content."
@@ -207,7 +207,7 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
              } = json_response(conn, 200)
 
       # Verify the message was created in the database
-      email = Emails.get_email!(message_id)
+      email = Messages.get_message!(message_id)
       assert email.from == "simple@example.com"
       assert email.to == "recipient@example.com"
       assert email.body == "Simple email without attachments"
@@ -252,7 +252,7 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
              } = json_response(conn, 200)
 
       # Verify the message was created in the database
-      email = Emails.get_email!(message_id)
+      email = Messages.get_message!(message_id)
       assert email.from == "sender@company.com"
       assert email.to == "recipient@company.com"
       assert email.body == "Email with multiple attachments"
@@ -278,8 +278,8 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
              } = json_response(conn, 200)
 
       # Verify the message was created without xillio_id
-      email = Emails.get_email!(message_id)
-      assert email.xillio_id == nil
+      email = Messages.get_message!(message_id)
+      assert email.remote_id == nil
     end
 
     test "handles invalid email webhook data", %{conn: conn} do
@@ -327,7 +327,7 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       assert message.to == "+12016661234"
       assert message.type == :mms
       assert message.body == "Check out this image!"
-      assert message.messaging_provider_id == "mms-message-1"
+      assert message.remote_id == "mms-message-1"
 
       assert message.attachments == [
                "https://example.com/image.jpg",
@@ -360,7 +360,7 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       assert message.to == "+12016661234"
       assert message.type == :mms
       assert message.body == "This is an MMS without attachments"
-      assert message.messaging_provider_id == "mms-message-2"
+      assert message.remote_id == "mms-message-2"
       assert message.attachments == []
     end
 
@@ -389,7 +389,7 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
       assert message.to == "+12016661234"
       assert message.type == :mms
       assert message.body == "This is an MMS with null attachments"
-      assert message.messaging_provider_id == "mms-message-3"
+      assert message.remote_id == "mms-message-3"
       assert message.attachments == nil
     end
 
@@ -467,7 +467,7 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
 
       # Verify the message was created without messaging_provider_id
       message = Messages.get_message!(message_id)
-      assert message.messaging_provider_id == nil
+      assert message.remote_id == nil
     end
 
     test "handles MMS webhook with large attachment arrays", %{conn: conn} do

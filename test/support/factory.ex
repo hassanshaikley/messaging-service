@@ -23,8 +23,8 @@ defmodule MessagingService.Factory do
       from: phone_us(),
       to: phone_us(),
       type: Enum.random([:mms, :sms]),
-      messaging_provider_id:
-        Enum.random([MessagingService.DataCase.generate_messaging_provider_id(), nil]),
+      remote_id_type: :messaging_provider,
+      remote_id: Enum.random([MessagingService.DataCase.generate_messaging_provider_id(), nil]),
       body: Faker.Lorem.paragraph(),
       attachments: fn
         %{type: :mms} ->
@@ -34,8 +34,8 @@ defmodule MessagingService.Factory do
           nil
       end,
       timestamp: fn
-        # Outbound messages lack a messaging_provider_id and timestamp
-        %{messaging_provider_id: nil} ->
+        # Outbound messages (when text) lack a messaging_provider_id and timestamp
+        %{remote_id: nil} ->
           nil
 
         %{} ->
@@ -44,14 +44,14 @@ defmodule MessagingService.Factory do
     }
   end
 
-  def email_factory() do
-    %MessagingService.Email{
-      from: email_mailto(),
-      to: email_mailto(),
-      xillio_id: "message-2",
-      body: "<html><body>html is <b>allowed</b> here </body></html>",
-      attachments: Enum.random([["attachment-url"] | []]),
-      timestamp: "2024-11-01T14:00:00Z"
-    }
-  end
+  # def email_factory() do
+  #   %MessagingService.Email{
+  #     from: email_mailto(),
+  #     to: email_mailto(),
+  #     xillio_id: "message-2",
+  #     body: "<html><body>html is <b>allowed</b> here </body></html>",
+  #     attachments: Enum.random([["attachment-url"] | []]),
+  #     timestamp: "2024-11-01T14:00:00Z"
+  #   }
+  # end
 end

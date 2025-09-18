@@ -14,21 +14,29 @@ defmodule MessagingService.ConsumerTest do
 
   test "processes sms" do
     inbound_sms =
-      build(:message, type: :sms, messaging_provider_id: generate_messaging_provider_id())
+      build(:message,
+        type: :sms,
+        remote_id: generate_messaging_provider_id(),
+        remote_id_type: :messaging_provider
+      )
 
     assert MessagingService.Consumer.process(inbound_sms) == :ok
   end
 
   test "processes mms" do
     inbound_mms =
-      build(:message, type: :mms, messaging_provider_id: generate_messaging_provider_id())
+      build(:message,
+        type: :mms,
+        remote_id: generate_messaging_provider_id(),
+        remote_id_type: :messaging_provider
+      )
 
     assert MessagingService.Consumer.process(inbound_mms) == :ok
   end
 
   test "processes email" do
     inbound_email =
-      build(:email, xillio_id: "some-id")
+      build(:message, remote_id: "some-id", remote_id_type: :xillio)
 
     assert MessagingService.Consumer.process(inbound_email) == :ok
   end

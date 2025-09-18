@@ -31,7 +31,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
       assert message.body == "Hello! This is a test SMS message."
     end
 
-    test "creates a message with MMS data including attachments", %{conn: conn} do
+    test "creates a message with SMS data including attachments", %{conn: conn} do
       message_data = %{
         "from" => "+12016661234",
         "to" => "+18045551234",
@@ -54,7 +54,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
       message = Messages.get_message!(message_id)
       assert message.from == "+12016661234"
       assert message.to == "+18045551234"
-      assert message.type == :mms
+      assert message.type == :sms
       assert message.body == "Check out this image!"
       assert message.attachments == ["https://example.com/image.jpg"]
       assert message.messaging_provider_id == "provider-123"
@@ -193,7 +193,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
                "https://example.com/video.mp4"
              ]
 
-      assert message.messaging_provider_id == "provider-123"
+      assert message.remote_id == "provider-123"
     end
 
     test "creates a message with MMS data and no attachments", %{conn: conn} do
@@ -366,7 +366,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
 
       # Verify the message was created without messaging_provider_id
       message = Messages.get_message!(message_id)
-      assert message.messaging_provider_id == nil
+      assert message.remote_id == nil
     end
   end
 
@@ -389,7 +389,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
              } = json_response(conn, 201)
 
       # Verify the message was created in the database
-      message = Emails.get_email!(message_id)
+      message = Messages.get_message!(message_id)
       assert message.from == "user@usehatchapp.com"
       assert message.to == "contact@gmail.com"
       assert message.body == "Hello! This is a test email message with <b>HTML</b> formatting."
@@ -415,7 +415,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
              } = json_response(conn, 201)
 
       # Verify the message was created in the database
-      message = Emails.get_email!(message_id)
+      message = Messages.get_message!(message_id)
       assert message.from == "user@example.com"
       assert message.to == "recipient@example.com"
       assert message.body == "This is an email with xillio_id"
@@ -444,7 +444,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
              } = json_response(conn, 201)
 
       # Verify the message was created in the database
-      message = Emails.get_email!(message_id)
+      message = Messages.get_message!(message_id)
       assert message.from == "sender@company.com"
       assert message.to == "recipient@company.com"
       assert message.body == "Please find the attached documents."
@@ -471,7 +471,7 @@ defmodule MessagingServiceWeb.MessageControllerTest do
              } = json_response(conn, 201)
 
       # Verify the message was created in the database
-      message = Emails.get_email!(message_id)
+      message = Messages.get_message!(message_id)
       assert message.from == "simple@example.com"
       assert message.to == "recipient@example.com"
       assert message.body == "This is a simple email without attachments."

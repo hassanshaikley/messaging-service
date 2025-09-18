@@ -17,7 +17,12 @@ defmodule MessagingServiceWeb.MessageController do
   def create(conn, params) do
     with {:ok, conversation} <- get_or_create_conversation(params),
          {:ok, message} <-
-           create_entity(conn, Map.put(params, "conversation_id", conversation.id)),
+           Messages.create_message(
+             Map.merge(params, %{
+               "conversation_id" => conversation.id,
+               "type" => get_type(conn)
+             })
+           ),
          :ok <- Consumer.process(message) do
       conn
       |> put_status(:created)
@@ -36,11 +41,7 @@ defmodule MessagingServiceWeb.MessageController do
     Conversations.create_conversation(%{participants: [from, to]})
   end
 
-  defp create_entity(conn, params) do
-    case conn.path_info do
-      ["api", "messages", "sms"] -> Messages.create_message(params)
-      ["api", "messages", "mms"] -> Messages.create_message(params)
-      ["api", "messages", "email"] -> Emails.create_email(params)
-    end
+  defp get_type(conn) do
+    List.last(conn.path_info) |> String.to_existing_atom()
   end
 end
