@@ -38,7 +38,7 @@ defmodule MessagingServiceWeb.MessageController do
     from = Map.get(params, "from")
     to = Map.get(params, "to")
 
-    Conversations.create_conversation(%{participants: [from, to]})
+    Conversations.get_or_create_conversation(from, to)
   end
 
   defp get_type(conn) do

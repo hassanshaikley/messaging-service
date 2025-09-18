@@ -10,6 +10,7 @@ defmodule MessagingService.Conversation do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder, only: [:id, :participants, :inserted_at, :updated_at]}
   schema "conversations" do
     field :participants, {:array, :string}
 

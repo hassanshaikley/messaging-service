@@ -14,7 +14,11 @@ defmodule MessagingService.Repo.Migrations.CreateConversationsTable do
           null: false
     end
 
+    create index(:messages, [:conversation_id])
+
     # Ensure participants are unique and properly indexed
+    # They are ordered in the changeset but it would probably bet better to order them at the database level
+    # Same goes for massaging the information so that there aren't duplicates
     create unique_index(:conversations, [:participants], name: :conversations_participants_unique)
 
     # Index for efficient querying by participant

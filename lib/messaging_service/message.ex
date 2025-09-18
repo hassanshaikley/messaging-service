@@ -2,6 +2,19 @@ defmodule MessagingService.Message do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @derive {Jason.Encoder,
+           only: [
+             :id,
+             :from,
+             :to,
+             :type,
+             :body,
+             :attachments,
+             :timestamp,
+             :conversation_id,
+             :inserted_at,
+             :updated_at
+           ]}
   schema "messages" do
     field :from, :string
     field :to, :string

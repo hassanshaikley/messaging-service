@@ -46,7 +46,7 @@ defmodule MessagingService.ConversationsTest do
 
     test "get_conversation_by_participants/2 returns nil when conversation doesn't exist" do
       found_conversation =
-        Conversations.get_conversation_by_participants("+12016661234", "+18045551234")
+        Conversations.get_conversation_by_participants("+1201666123422", "+1804555123422")
 
       assert found_conversation == nil
     end
@@ -61,11 +61,11 @@ defmodule MessagingService.ConversationsTest do
     test "get_or_create_conversation/2 returns existing conversation when it exists" do
       {:ok, original_conversation} =
         Conversations.create_conversation(%{
-          participants: ["+12016661234", "+18045551234"]
+          participants: ["+12016661444", "+18045551444"]
         })
 
       assert {:ok, conversation} =
-               Conversations.get_or_create_conversation("+12016661234", "+18045551234")
+               Conversations.get_or_create_conversation("+12016661444", "+18045551444")
 
       assert conversation.id == original_conversation.id
     end

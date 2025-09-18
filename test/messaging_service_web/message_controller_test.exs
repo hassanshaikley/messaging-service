@@ -57,7 +57,8 @@ defmodule MessagingServiceWeb.MessageControllerTest do
       assert message.type == :sms
       assert message.body == "Check out this image!"
       assert message.attachments == ["https://example.com/image.jpg"]
-      assert message.messaging_provider_id == "provider-123"
+      assert message.remote_id == "provider-123"
+      assert message.remote_id_type == :messaging_provider
     end
 
     test "handles missing required fields", %{conn: conn} do

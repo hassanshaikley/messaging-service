@@ -19,10 +19,21 @@ defmodule MessagingService.Conversations do
       {:error, %Ecto.Changeset{}}
 
   """
+
   def create_conversation(attrs \\ %{}) do
-    %Conversation{}
-    |> Conversation.changeset(attrs)
-    |> Repo.insert(on_conflict: :nothing, returning: true)
+    case Repo.insert(Conversation.changeset(%Conversation{}, attrs)) do
+      {:ok, conversation} ->
+        {:ok, conversation}
+
+      {:error, %Ecto.Changeset{errors: [participants: {"has already been taken", _}]}} ->
+        %{participants: [from, to]} = attrs
+        existing = get_conversation_by_participants(from, to)
+
+        {:ok, existing}
+
+      error ->
+        error
+    end
   end
 
   @doc """

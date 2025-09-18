@@ -72,6 +72,23 @@ defmodule MessagingService.Messages do
   end
 
   @doc """
+  Lists messages for a specific conversation.
+
+  ## Examples
+
+      iex> list_messages_for_conversation(123)
+      [%Message{}, ...]
+
+  """
+  def list_messages_for_conversation(conversation_id) do
+    from(m in Message,
+      where: m.conversation_id == ^conversation_id,
+      order_by: [asc: m.inserted_at]
+    )
+    |> Repo.all()
+  end
+
+  @doc """
   Updates a message.
 
   ## Examples

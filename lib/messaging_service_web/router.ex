@@ -34,6 +34,11 @@ defmodule MessagingServiceWeb.Router do
       post "/email", MessageController, :create
     end
 
+    scope "/conversations" do
+      get "/", ConversationController, :index
+      get "/:id/messages", ConversationController, :show
+    end
+
     scope "/webhooks" do
       pipe_through :webhooks
 
