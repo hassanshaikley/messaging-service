@@ -11,6 +11,18 @@ config :messaging_service,
   ecto_repos: [MessagingService.Repo],
   generators: [timestamp_type: :utc_datetime, binary_id: true]
 
+# Messaging provider configuration
+config :messaging_service,
+  # IF you use the twilio or sendgrid adapters then you need these values set
+  twilio_account_sid: System.get_env("TWILIO_ACCOUNT_SID", "ACtest"),
+  twilio_auth_token: System.get_env("TWILIO_AUTH_TOKEN", "test"),
+  sendgrid_api_key: System.get_env("SENDGRID_API_KEY", "test_key"),
+
+  # Adapter configuration (can be overridden in runtime.exs)
+  sms_adapter: MessagingService.Producer.SMSAdapterLocal,
+  mms_adapter: MessagingService.Producer.MMSAdapterLocal,
+  email_adapter: MessagingService.Producer.EmailAdapterLocal
+
 # Configures the endpoint
 config :messaging_service, MessagingServiceWeb.Endpoint,
   url: [host: "localhost"],

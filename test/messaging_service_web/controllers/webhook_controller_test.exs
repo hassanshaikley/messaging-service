@@ -2,7 +2,6 @@ defmodule MessagingServiceWeb.WebhookControllerTest do
   use MessagingServiceWeb.ConnCase
 
   alias MessagingService.Messages
-  alias MessagingService.Emails
 
   describe "POST /api/webhooks/sms" do
     test "processes incoming SMS webhook", %{conn: conn} do

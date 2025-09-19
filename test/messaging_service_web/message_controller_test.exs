@@ -2,7 +2,6 @@ defmodule MessagingServiceWeb.MessageControllerTest do
   use MessagingServiceWeb.ConnCase
 
   alias MessagingService.Messages
-  alias MessagingService.Emails
 
   describe "POST /api/messages/sms" do
     test "creates a message with valid SMS data", %{conn: conn} do

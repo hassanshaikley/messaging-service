@@ -45,6 +45,10 @@ defmodule MessagingServiceWeb.Router do
       post "/sms", WebhookController, :create
       post "/mms", WebhookController, :create
       post "/email", WebhookController, :create
+
+      # Provider-specific webhook endpoints
+      post "/twilio", TwilioWebhookController, :create
+      post "/sendgrid", SendGridWebhookController, :create
     end
   end
 

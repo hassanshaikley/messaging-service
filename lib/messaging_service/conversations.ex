@@ -186,9 +186,8 @@ defmodule MessagingService.Conversations do
 
     case participants do
       [from, to] ->
-        with {:ok, conversation} <- get_or_create_conversation(from, to),
-             {:ok, updated_conversation} <- add_message_to_conversation(conversation, message) do
-          {:ok, updated_conversation}
+        with {:ok, conversation} <- get_or_create_conversation(from, to) do
+          add_message_to_conversation(conversation, message)
         end
 
       _ ->

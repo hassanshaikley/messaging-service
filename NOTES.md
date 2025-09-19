@@ -15,6 +15,7 @@
 - Assuming conversations can be unique - HOWEVER need to normalize the participant addresses to fully do this, unless we know phone numbers will be formatted the same
 - Also might want to put creating the conversation + the message in a transaction, so we don't have conversations when message creation fails
 - Some things are generated and extranous. Normally I would go through and remove what is not needed + refactor a bit more but I did not in the interest of time.
+- 429 is rate limiting. So when producing I think there needs to be some kind of architecture in place to handle that. OR even if there are 500s. When rate limited you have to try again later. I like processing webhooks in jobs so that it doesn't overwhelm a system. You may need to do something like that as well when communicating with these providers.
 
 
 ## Places for improvement

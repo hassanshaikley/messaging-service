@@ -123,7 +123,7 @@ defmodule MessagingService.ConversationsTest do
       message_time = ~U[2024-11-01T14:00:00Z]
       message = %{timestamp: message_time}
 
-      assert {:ok, updated_conversation} =
+      assert {:ok, _updated_conversation} =
                Conversations.add_message_to_conversation(conversation, message)
     end
 
