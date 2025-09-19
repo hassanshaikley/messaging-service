@@ -27,7 +27,7 @@ if config_env() in [:dev, :test] do
     password: System.get_env("POSTGRES_PASSWORD"),
     hostname: "localhost",
     database:
-      "#{System.get_env("POSTGRES_DB")}_test#{(config_env() == :test && System.get_env("MIX_TEST_PARTITION")) || ""}",
+      "#{System.get_env("POSTGRES_DB")}#{(config_env() == :test && "_test#{System.get_env("MIX_TEST_PARTITION")}") || ""}",
     pool: Ecto.Adapters.SQL.Sandbox,
     pool_size: System.schedulers_online() * 2,
     show_sensitive_data_on_connection_error: config_env() == :dev,

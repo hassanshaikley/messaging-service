@@ -27,4 +27,3 @@
   - Compile warnings as errors checkl
   - Could have sworn I used UUIDs in the generator, welp, it's integers! Prefer UUIDs
   - Sobelow is always good
-- Experienced some test flakiness locally where I had to reset the local test DB. Don't have much time to spend debugging this at the moment.
