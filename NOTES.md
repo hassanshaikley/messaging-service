@@ -28,3 +28,7 @@
   - Compile warnings as errors checkl
   - Could have sworn I used UUIDs in the generator, welp, it's integers! Prefer UUIDs
   - Sobelow is always good
+- Make the adapters behave more consistently / use typespecs and behaviours
+- Structured logs can help
+- Rate limiting especially since we mighe be publishing to another API
+- Securing the API / requiring auth
