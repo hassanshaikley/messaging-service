@@ -26,7 +26,7 @@ curl -X POST "$BASE_URL/api/messages/sms" \
 
 # Test 2: Send MMS
 echo "2. Testing MMS send..."
-curl -X POST "$BASE_URL/api/messages/sms" \
+curl -X POST "$BASE_URL/api/messages/mms" \
   -H "$CONTENT_TYPE" \
   -d '{
     "from": "+12016661234",
@@ -68,7 +68,7 @@ curl -X POST "$BASE_URL/api/webhooks/sms" \
 
 # Test 5: Simulate incoming MMS webhook
 echo "5. Testing incoming MMS webhook..."
-curl -X POST "$BASE_URL/api/webhooks/sms" \
+curl -X POST "$BASE_URL/api/webhooks/mms" \
   -H "$CONTENT_TYPE" \
   -d '{
     "from": "+18045551234",
