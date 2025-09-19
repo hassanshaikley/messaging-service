@@ -1,7 +1,7 @@
 defmodule MessagingServiceWeb.MessageController do
   use MessagingServiceWeb, :controller
 
-  alias MessagingService.Consumer
+  alias MessagingService.Producer
   alias MessagingService.Messages
   alias MessagingService.Conversations
 
@@ -22,7 +22,7 @@ defmodule MessagingServiceWeb.MessageController do
                "type" => get_type(conn)
              })
            ),
-         :ok <- Consumer.process(message) do
+         :ok <- Producer.process(message) do
       conn
       |> put_status(:created)
       |> json(%{
