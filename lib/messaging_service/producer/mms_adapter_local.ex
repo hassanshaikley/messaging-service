@@ -1,5 +1,5 @@
 defmodule MessagingService.Producer.MMSAdapterLocal do
-  def process(message) do
+  def process(_message) do
     :ok
   end
 end

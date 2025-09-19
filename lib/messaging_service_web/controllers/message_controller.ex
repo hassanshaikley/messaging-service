@@ -2,7 +2,6 @@ defmodule MessagingServiceWeb.MessageController do
   use MessagingServiceWeb, :controller
 
   alias MessagingService.Consumer
-  alias MessagingService.Emails
   alias MessagingService.Messages
   alias MessagingService.Conversations
 

@@ -166,9 +166,7 @@ defmodule MessagingService.Conversations do
       {:ok, %Conversation{}}
 
   """
-  def add_message_to_conversation(%Conversation{} = conversation, message) do
-    message_time = message.timestamp || message.inserted_at
-
+  def add_message_to_conversation(%Conversation{} = conversation, _message) do
     conversation
     |> Conversation.update_changeset(%{})
     |> Repo.update()

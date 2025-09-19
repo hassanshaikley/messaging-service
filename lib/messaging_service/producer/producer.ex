@@ -3,19 +3,19 @@ defmodule MessagingService.Producer do
 
   @adapters %{
     "mms" =>
-      Application.get_env(
+      Application.compile_env(
         :messaging_service,
         :mms_adapter,
         MessagingService.Producer.MMSAdapterLocal
       ),
     "sms" =>
-      Application.get_env(
+      Application.compile_env(
         :messaging_service,
         :sms_adapter,
         MessagingService.Producer.SMSAdapterLocal
       ),
     "email" =>
-      Application.get_env(
+      Application.compile_env(
         :messaging_service,
         :email_adapter,
         MessagingService.Producer.EmailAdapterLocal

@@ -3,7 +3,6 @@ defmodule MessagingServiceWeb.WebhookController do
 
   alias MessagingService.Consumer
   alias MessagingService.Conversations
-  alias MessagingService.Emails
   alias MessagingService.Messages
 
   action_fallback MessagingServiceWeb.FallbackController
